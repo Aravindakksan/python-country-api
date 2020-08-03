@@ -1,20 +1,20 @@
 from flask import Flask,jsonify
-from flask_restful import Api,Resource,reqparse
 import urllib.request as request
 import simplejson 
 import json
 import pymysql
-from flask_cors import CORS
+import pyodbc
+#from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-CORS(app)
-api=Api(app)
+#CORS(app)
 countries=[]
 # Connect to the database
-connection = pymysql.connect(host='sql12.freemysqlhosting.net',
-                             user='sql12356306',
-                             password='4lpG4FD3Za',
-                             db='sql12356306')
+server = 'tcp:country.database.windows.net' 
+database = 'rest country api' 
+username = 'aravind' 
+password = 'Akksan766764#'
+connection = pyodbc.connect('DRIVER={ODBC Driver 13 for SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
 cursor = connection.cursor()
 cursor.execute("SELECT * FROM country")
 rows = cursor.fetchall()
@@ -140,14 +140,9 @@ def home():
     # Create a new record
     if(len(rows)<250):
         for i in range(0,len(name)):
-            sql = "INSERT INTO `country` (`name`, `code`, `capital`, `region`, `subregion`, `population`, `area`, `lat`, `lon`, `timezone`, `currency`, `flag`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            cursor.execute(sql, (name[i],ccode[i],capital[i],region[i],subregion[i],population[i],area[i],latlong[i][0],latlong[i][1],timezone[i],currency[i],flag[i]))
+            cursor.execute("INSERT INTO dbo.country(name,code,capital,region,subregion,population,area,lat,lon,timezone,currency,flag) values (?,?,?,?,?,?,?,?,?,?,?,?)", name[i],str(ccode[i]),capital[i],region[i],subregion[i],str(population[i]),str(area[i]),str(latlong[i][0]),str(latlong[i][1]),timezone[i],currency[i],flag[i])
             connection.commit()
 
-    
+    print(len(rows))
     return jsonify(countries)
     
-
-
-if __name__ == "__main__":
-    app.run(debug = True)
