@@ -13,9 +13,7 @@ server = 'tcp:country.database.windows.net'
 database = 'rest country api' 
 username = 'aravind' 
 password = 'Akksan766764#'
-drivers = [item for item in pyodbc.drivers()]
-driver = drivers[-1]
-connection = pyodbc.connect('DRIVER={driver};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
+connection = pyodbc.connect('DRIVER={SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
 cursor = connection.cursor()
 cursor.execute("SELECT * FROM country")
 rows = cursor.fetchall()
