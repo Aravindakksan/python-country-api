@@ -1,6 +1,5 @@
 from flask import Flask,jsonify
 import urllib.request as request
-import simplejson 
 import json
 import pymysql
 import pyodbc
