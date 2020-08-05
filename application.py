@@ -3,10 +3,10 @@ import urllib.request as request
 import json
 import pymysql
 import pyodbc
-from flask_cors import CORS, cross_origin
+#from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-CORS(app)
+#CORS(app)
 countries=[]
 # Connect to the database
 server = 'tcp:country.database.windows.net' 
